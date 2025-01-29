@@ -1,10 +1,13 @@
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using Microsoft.ML.Transforms.Image;
+using Microsoft.ML.Transforms;
+using Tensorflow;
+using Microsoft.ML.Vision;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
+using static Tensorflow.Binding;
+using Google.Protobuf;
 public class FaceDetectionService
 {
     private readonly MLContext _mlContext;
@@ -18,16 +21,21 @@ public class FaceDetectionService
 
     private ITransformer LoadModel()
     {
-        var pipeline = _mlContext.Transforms.LoadImages(outputColumnName: "image", imageFolder: "", inputColumnName: nameof(ImageInputData.ImagePath))
-            .Append(_mlContext.Transforms.ResizeImages(outputColumnName: "image", imageWidth: 300, imageHeight: 300))
-            .Append(_mlContext.Transforms.ExtractPixels(outputColumnName: "image"))
-            .Append(_mlContext.Model.LoadTensorFlowModel("ssd_mobilenet_v1_coco_2017_11_17/saved_model")
-                .ScoreTensorName("detection_scores")
-                .AddInput("image")
-                .AddOutput("detection_boxes", "detection_classes", "detection_scores"));
-
-        return pipeline.Fit(_mlContext.Data.LoadFromEnumerable(new List<ImageInputData>()));
+        var modelPath = "ssd_mobilenet_v2/saved_model";
+        var graphDef = new GraphDef();
+        using (var file = File.OpenRead(modelPath))
+        {
+            graphDef.MergeFrom(new CodedInputStream(file));
+            tf.import_graph_def(graphDef, name: "");
+        }
+        // Assuming you need to return an ITransformer object, you might need to adjust this part
+        // to properly load and return the model as an ITransformer.
+        return _mlContext.Model.Load(modelPath, out var modelInputSchema);
     }
+
+
+
+
 
     public List<Rectangle> DetectFaces(Bitmap bitmap)
     {
@@ -54,8 +62,8 @@ public class FaceDetectionService
 
 public class ImageInputData
 {
-    [ImageType(300, 300)]
     public Bitmap Image { get; set; }
+    public byte[] ImagePath { get; set; }
 }
 
 public class ImagePrediction : ImageInputData

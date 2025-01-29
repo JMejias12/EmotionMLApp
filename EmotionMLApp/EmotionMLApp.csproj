@@ -13,9 +13,11 @@
 
   <ItemGroup>
     <PackageReference Include="microsoft.ml" Version="4.0.1" />
+    <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="4.0.1" />
     <PackageReference Include="microsoft.ml.tensorflow" Version="4.0.1" />
     <PackageReference Include="microsoft.ml.vision" Version="4.0.1" />
     <PackageReference Include="scisharp.tensorflow.redist" Version="2.16.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
   </ItemGroup>
 
 </Project>

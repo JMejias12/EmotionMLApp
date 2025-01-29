@@ -1,10 +1,15 @@
 using EmotionMLApp.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    ;
+builder.Services.AddSingleton<FaceDetectionService>();
 
 var app = builder.Build();
 
