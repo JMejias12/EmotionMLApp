@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Controllers\" />
+    <Folder Include="Components\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.ml" Version="4.0.1" />
+    <PackageReference Include="microsoft.ml.tensorflow" Version="4.0.1" />
+    <PackageReference Include="microsoft.ml.vision" Version="4.0.1" />
+    <PackageReference Include="scisharp.tensorflow.redist" Version="2.16.0" />
+  </ItemGroup>
+
+</Project>
